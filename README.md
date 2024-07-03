@@ -9,6 +9,9 @@ INT-34 Test Task
 git clone https://github.com/aerzex/PT-Start-INT-34
 ```
 ## Ansible
+
+Внутри директории находится bash-скрипт 'setup_debian.sh' необходимый для настройки Debian 10. Создание пользователя ansible, добавление его в группу sudo и запуск ssh
+
 ```bash
 cd PT-Start-INT-34/Ansible
 ```

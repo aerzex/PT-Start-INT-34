@@ -1,0 +1,1 @@
+master = ansible_host="{{all.hosts.master.ansible_host}}" ansible_user="{{all.hosts.master.ansible_user}}" ansible_password="{{all.hosts.master.ansible_password}}"

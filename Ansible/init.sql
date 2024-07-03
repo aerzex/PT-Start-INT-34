@@ -1,0 +1,17 @@
+CREATE DATABASE DB_DATABASE;
+
+\c DB_DATABASE;
+
+CREATE TABLE IF NOT EXISTS emails (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS numbers (
+    id SERIAL PRIMARY KEY,
+    number VARCHAR(255)
+);
+
+
+INSERT INTO emails (email) VALUES ('test1@pt.ru'), ('test2@pt.ru');
+INSERT INTO numbers (number) VALUES ('+77777777777'), ('88888888888');

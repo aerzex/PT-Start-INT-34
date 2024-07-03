@@ -1,4 +1,4 @@
-- name: Update apt cache
+- name: Update 
   hosts: master
   become: true
 
@@ -8,8 +8,32 @@
         update_cache: yes
         cache_valid_time: 86400
       become: yes
+    - name: Install dependencies
+      apt:  
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+        state: present
 
-- name: Configure PostgreSQL with replication for Telegram Bot
+    - name: Add PostgreSQL APT repository key
+      apt_key:
+        url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+        state: present
+
+    - name: Add PostgreSQL APT repository
+      apt_repository:
+        repo: deb https://apt.postgresql.org/pub/repos/apt/ {{ ansible_distribution_release }}-pgdg main
+        state: present
+
+    - name: Update apt cache again
+      apt:
+        update_cache: yes
+
+
+- name: Configure PostgreSQL
   hosts: master
   become: true
   vars_files:
@@ -18,7 +42,7 @@
   tasks:
     - name: Install PostgreSQL
       apt:
-        name:
+        name: 
           - postgresql-16
           - postgresql-contrib
           - libpq-dev
@@ -46,7 +70,7 @@
     - name: Configure postgresql.conf
       become_user: "{{ all.vars.DB_USER }}"
       blockinfile:
-        path: /etc/postgresql/14/main/postgresql.conf
+        path: /etc/postgresql/16/main/postgresql.conf
         block: |
           listen_addresses = '*'
           port = {{ all.vars.DB_PORT }}
@@ -63,7 +87,7 @@
     - name: Configure pg_hba.conf 
       become_user: "{{ all.vars.DB_USER }}"
       blockinfile:
-        path: /etc/postgresql/14/main/pg_hba.conf
+        path: /etc/postgresql/16/main/pg_hba.conf
         block: |
          local all {{ all.vars.DB_USER }} peer
          host all all 0.0.0.0/0 md5

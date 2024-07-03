@@ -6,9 +6,8 @@ su -
 
 adduser --disabled-password --gecos "" ansible
 
-echo "Пользователь ansible создан и пароль установлен."
-
 echo -e "123456\n123456" | passwd ansible
+
 usermod -aG sudo ansible
 
 apt-get install -y openssh-server

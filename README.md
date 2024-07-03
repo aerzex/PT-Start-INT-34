@@ -6,7 +6,7 @@ INT-34 Test Task
 Чтобы установить и запустить проект, выполните следующие команды:
 
 ```bash
-git clone https://github.com/aerzex/P](https://github.com/aerzex/PT-Start-INT-34
+git clone https://github.com/aerzex/PT-Start-INT-34
 ```
 ## Ansible
 ```bash

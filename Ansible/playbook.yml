@@ -42,6 +42,7 @@
     - name: Install dependencies
       apt:  
         name:
+          - acl 
           - apt-transport-https
           - ca-certificates
           - curl
@@ -115,15 +116,6 @@
           hot_standby_feedback=on
           log_replication_commands=on
     
-    - name: Configure pg_hba.conf 
-      become_user: "{{ all.vars.DB_USER }}"
-      blockinfile:
-        path: /etc/postgresql/16/main/pg_hba.conf
-        block: |
-         local all {{ all.vars.DB_USER }} peer
-         host all all 0.0.0.0/0 md5
-         host replication {{ all.vars.DB_REPL_USER }} {{ all.vars.DB_REPL_HOST}}/32 scram-sha-256 
-
     - name: Restart PostgreSQL
       service:
         name: postgresql
@@ -139,7 +131,7 @@
         path: /tmp/init.sql
         owner: "{{ all.vars.DB_USER }}"
         group: "{{ all.vars.DB_USER }}"
-        mode: "0644"
+        mode: "644"
 
     - name: Change database variables in init.sql
       replace:

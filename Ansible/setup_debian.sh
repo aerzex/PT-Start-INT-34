@@ -1,11 +1,14 @@
 #!/bin/bash
 
-useradd -m -s /bin/bash ansible
+apt-get install -y adduser
 
-echo "ansible:123456" | chpasswd
+su -
 
-apt-get update && apt-get install -y sudo
+adduser --disabled-password --gecos "" ansible
 
+echo "Пользователь ansible создан и пароль установлен."
+
+echo -e "123456\n123456" | passwd ansible
 usermod -aG sudo ansible
 
 apt-get install -y openssh-server

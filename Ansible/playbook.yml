@@ -97,11 +97,6 @@
       service:
         name: postgresql
         state: restarted  
-
-    - name: create new user
-      command: psql -c "ALTER ROLE {{ all.vars.DB_USER }} PASSWORD '{{ all.vars.DB_REPL_PASSWORD }}';"
-      become: true
-      become_user: "{{ all.vars.DB_USER }}"
        
     - name : Create copy of init.sql
       copy: 
@@ -126,18 +121,6 @@
         path: /tmp/init.sql
         regexp: "DB_USER"
         replace: "{{ all.vars.DB_USER }}"
-
-    - name: Change repl user variables in init.sql
-      replace:
-        path: /tmp/init.sql
-        regexp: "DB_REPL_USER"
-        replace: "{{ all.vars.DB_REPL_USER }}"
-
-    - name: Change repl password variables in init.sql
-      replace:
-        path: /tmp/init.sql
-        regexp: "DB_REPL_PASSWORD"
-        replace: "{{ all.vars.DB_REPL_PASSWORD }}"
 
     - name: Execute init.sql
       command: psql -a -f /tmp/init.sql

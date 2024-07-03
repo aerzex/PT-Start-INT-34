@@ -1,3 +1,34 @@
+---
+- name: Grant root privileges to ansible user
+  hosts: master
+  become: true
+
+  tasks:
+    - name: Ensure sudo package is installed
+      apt:
+        name: sudo
+        state: present
+
+    - name: Add ansible user to sudo group
+      user:
+        name: ansible
+        groups: sudo
+        append: yes
+
+    - name: Ensure sudoers file is configured correctly
+      copy:
+        content: "ansible ALL=(ALL) NOPASSWD: ALL"
+        dest: /etc/sudoers.d/ansible
+        owner: root
+        group: root
+        mode: '0440'
+      notify:
+        - reload sudoers
+
+  handlers:
+    - name: reload sudoers
+      command: sudo visudo -c
+
 - name: Update 
   hosts: master
   become: true
@@ -126,4 +157,3 @@
       command: psql -a -f /tmp/init.sql
       become: true
       become_user: "{{ all.vars.DB_USER }}"
-
